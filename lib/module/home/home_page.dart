@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task_list/core/constants.dart';
+import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
+import 'package:flutter_task_list/module/home/widget/appbar.dart';
+import 'package:flutter_task_list/module/home/widget/header.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatelessWidget {
@@ -10,10 +12,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box<Task>(taskBoxName);
+    final themData = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('To Do List'),
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context).push(
@@ -22,19 +23,33 @@ class HomePage extends StatelessWidget {
         },
         label: const Text('Add New Task'),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: box.listenable(),
-        builder: (context, value, child) {
-          return ListView.builder(
-            itemCount: box.values.length,
-            itemBuilder: (contex, index) {
-              Task task = box.values.toList()[index];
-              return Container(
-                child: Text(task.name),
-              );
-            },
-          );
-        },
+      body: SafeArea(
+        child: Column(
+          children: [
+            MyAppBar(themData: themData),
+            Expanded(
+              child: ValueListenableBuilder(
+                valueListenable: box.listenable(),
+                builder: (context, value, child) {
+                  return ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                    itemCount: box.values.length + 1,
+                    itemBuilder: (contex, index) {
+                      if (index == 0) {
+                        return Header(theme: themData,);
+                      } else {
+                        Task task = box.values.toList()[index - 1];
+                        return Container(
+                          child: Text(task.name),
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
