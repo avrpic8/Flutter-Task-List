@@ -13,7 +13,7 @@ class MyAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 102,
+      height: 110,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/appbar.dart';
 import 'package:flutter_task_list/module/home/widget/header.dart';
+import 'package:flutter_task_list/module/home/widget/task_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,7 +23,15 @@ class HomePage extends StatelessWidget {
             MaterialPageRoute(builder: (context) => EditTaskPage()),
           );
         },
-        label: const Text('Add New Task'),
+        label: Row(
+          children: const [
+            Text('Add New Task'),
+            SizedBox(
+              width: 5,
+            ),
+            Icon(CupertinoIcons.add)
+          ],
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -36,12 +46,12 @@ class HomePage extends StatelessWidget {
                     itemCount: box.values.length + 1,
                     itemBuilder: (contex, index) {
                       if (index == 0) {
-                        return Header(theme: themData,);
+                        return Header(
+                          theme: themData,
+                        );
                       } else {
                         Task task = box.values.toList()[index - 1];
-                        return Container(
-                          child: Text(task.name),
-                        );
+                        return TaskCard(task: task);
                       }
                     },
                   );
