@@ -16,11 +16,14 @@ class AppTheme {
         onSurface: primaryTextColor,
         //onBackground: primaryTextColor,
       ),
-      textTheme: GoogleFonts.poppinsTextTheme(const TextTheme(
-        headline6: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        bodyText2: TextStyle(color: primaryTextColor),
-        subtitle1: TextStyle(color: primaryTextColor),
-      )),
+      textTheme: GoogleFonts.poppinsTextTheme(
+        const TextTheme(
+          headline6:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          bodyText2: TextStyle(color: primaryTextColor),
+          subtitle1: TextStyle(color: primaryTextColor),
+        ),
+      ),
       inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(color: secondryTextColor),
           border: InputBorder.none),

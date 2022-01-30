@@ -5,6 +5,7 @@ import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/appbar.dart';
 import 'package:flutter_task_list/module/home/widget/header.dart';
+import 'package:flutter_task_list/global/reusable_switch.dart';
 import 'package:flutter_task_list/module/home/widget/task_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -16,23 +17,13 @@ class HomePage extends StatelessWidget {
     final box = Hive.box<Task>(taskBoxName);
     final themData = Theme.of(context);
     return Scaffold(
+      backgroundColor: themData.colorScheme.background,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => EditTaskPage()),
-          );
-        },
-        label: Row(
-          children: const [
-            Text('Add New Task'),
-            SizedBox(
-              width: 5,
-            ),
-            Icon(CupertinoIcons.add)
-          ],
-        ),
-      ),
+      floatingActionButton: ReusableSwitch(
+          textSwitch: 'Add New Task',
+          icon: CupertinoIcons.add,
+          onClick: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => EditTaskPage(newTask: Task(),)))),
       body: SafeArea(
         child: Column(
           children: [
