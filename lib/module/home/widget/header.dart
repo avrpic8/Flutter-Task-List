@@ -8,45 +8,52 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Today',
-              style: theme.textTheme.headline6!
-                  .apply(color: Colors.black, fontSizeFactor: 0.9),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Today',
+                  style: theme.textTheme.headline6!
+                      .apply(color: Colors.black, fontSizeFactor: 0.9),
+                ),
+                Container(
+                  width: 70,
+                  height: 3,
+                  margin: const EdgeInsets.only(top: 3),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(1.5),
+                  ),
+                )
+              ],
             ),
-            Container(
-              width: 70,
-              height: 3,
-              margin: const EdgeInsets.only(top: 3),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(1.5),
+            MaterialButton(
+              onPressed: () {},
+              color: const Color(0xffeaeff5),
+              textColor: secondryTextColor,
+              elevation: 0,
+              child: Row(
+                children: const [
+                  Text('Delete All'),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Icon(
+                    CupertinoIcons.trash,
+                    size: 18,
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
-        MaterialButton(
-          onPressed: () {},
-          color: const Color(0xffeaeff5),
-          textColor: secondryTextColor,
-          elevation: 0,
-          child: Row(
-            children: const [
-              Text('Delete All'),
-              SizedBox(
-                width: 4,
-              ),
-              Icon(
-                CupertinoIcons.trash,
-                size: 18,
-              ),
-            ],
-          ),
+        const SizedBox(
+          height: 8,
         )
       ],
     );

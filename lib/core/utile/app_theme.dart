@@ -20,6 +20,7 @@ class AppTheme {
         const TextTheme(
           headline6:
               TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          bodyText1: TextStyle(color: primaryTextColor),
           bodyText2: TextStyle(color: primaryTextColor),
           subtitle1: TextStyle(color: primaryTextColor),
         ),

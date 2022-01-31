@@ -39,7 +39,7 @@ class ReusableSwitch extends StatelessWidget {
               style: TextStyle(color: themeData.colorScheme.surface),
             ),
             const SizedBox(
-              width: 5,
+              width: 8,
             ),
             Container(
               width: 24,

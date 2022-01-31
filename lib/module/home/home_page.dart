@@ -22,8 +22,10 @@ class HomePage extends StatelessWidget {
       floatingActionButton: ReusableSwitch(
           textSwitch: 'Add New Task',
           icon: CupertinoIcons.add,
-          onClick: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => EditTaskPage(newTask: Task(),)))),
+          onClick: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => EditTaskPage(
+                    newTask: Task(),
+                  )))),
       body: SafeArea(
         child: Column(
           children: [

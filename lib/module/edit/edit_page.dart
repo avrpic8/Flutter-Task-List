@@ -7,11 +7,17 @@ import 'package:flutter_task_list/global/reusable_switch.dart';
 import 'package:flutter_task_list/module/edit/widget/priority_check_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class EditTaskPage extends StatelessWidget {
-  final _textController = TextEditingController();
+class EditTaskPage extends StatefulWidget {
   final Task newTask;
 
-  EditTaskPage({Key? key, required this.newTask}) : super(key: key);
+  const EditTaskPage({Key? key, required this.newTask}) : super(key: key);
+
+  @override
+  State<EditTaskPage> createState() => _EditTaskPageState();
+}
+
+class _EditTaskPageState extends State<EditTaskPage> {
+  final _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +35,12 @@ class EditTaskPage extends StatelessWidget {
         icon: CupertinoIcons.check_mark,
         textSwitch: 'Save Changes',
         onClick: () {
-          final task = Task()
-            ..name = _textController.text
-            ..periority = Periority.low;
-
-          if (task.isInBox) {
-            task.save();
+          widget.newTask.name = _textController.text;
+          if (widget.newTask.isInBox) {
+            widget.newTask.save();
           } else {
             final box = Hive.box<Task>(taskBoxName);
-            box.add(task);
+            box.add(widget.newTask);
           }
           Navigator.pop(context);
         },
@@ -52,8 +55,13 @@ class EditTaskPage extends StatelessWidget {
                 Flexible(
                   child: PriorityCheckBox(
                     label: 'High',
-                    color: primaryColor,
-                    isSelected: newTask.periority == Periority.high,
+                    color: highPeriorityColor,
+                    isSelected: widget.newTask.periority == Periority.high,
+                    onClick: () {
+                      setState(() {
+                        widget.newTask.periority = Periority.high;
+                      });
+                    },
                   ),
                   flex: 1,
                 ),
@@ -63,8 +71,13 @@ class EditTaskPage extends StatelessWidget {
                 Flexible(
                   child: PriorityCheckBox(
                     label: 'Normal',
-                    color: const Color(0xfff09819),
-                    isSelected: newTask.periority == Periority.medium,
+                    color: mediumPeriorityColor,
+                    isSelected: widget.newTask.periority == Periority.medium,
+                    onClick: () {
+                      setState(() {
+                        widget.newTask.periority = Periority.medium;
+                      });
+                    },
                   ),
                   flex: 1,
                 ),
@@ -74,8 +87,13 @@ class EditTaskPage extends StatelessWidget {
                 Flexible(
                   child: PriorityCheckBox(
                     label: 'Low',
-                    color: const Color(0xff3be1f1),
-                    isSelected: newTask.periority == Periority.low,
+                    color: lowPeriorityColor,
+                    isSelected: widget.newTask.periority == Periority.low,
+                    onClick: () {
+                      setState(() {
+                        widget.newTask.periority = Periority.low;
+                      });
+                    },
                   ),
                   flex: 1,
                 )
@@ -83,8 +101,13 @@ class EditTaskPage extends StatelessWidget {
             ),
             TextField(
               controller: _textController,
-              decoration:
-                  const InputDecoration(label: Text('Add a task for today...')),
+              decoration: InputDecoration(
+                label: Text(
+                  'Add a task for today...',
+                  style:
+                      themeData.textTheme.bodyText1!.apply(fontSizeFactor: 1.2),
+                ),
+              ),
             )
           ],
         ),
