@@ -8,16 +8,22 @@ import 'package:flutter_task_list/module/edit/widget/priority_check_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class EditTaskPage extends StatefulWidget {
-  final Task newTask;
+  final Task task;
 
-  const EditTaskPage({Key? key, required this.newTask}) : super(key: key);
+  const EditTaskPage({Key? key, required this.task}) : super(key: key);
 
   @override
   State<EditTaskPage> createState() => _EditTaskPageState();
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
-  final _textController = TextEditingController();
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController(text: widget.task.name);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +41,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
         icon: CupertinoIcons.check_mark,
         textSwitch: 'Save Changes',
         onClick: () {
-          widget.newTask.name = _textController.text;
-          if (widget.newTask.isInBox) {
-            widget.newTask.save();
+          widget.task.name = _textController.text;
+          if (widget.task.isInBox) {
+            widget.task.save();
           } else {
             final box = Hive.box<Task>(taskBoxName);
-            box.add(widget.newTask);
+            box.add(widget.task);
           }
           Navigator.pop(context);
         },
@@ -56,10 +62,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   child: PriorityCheckBox(
                     label: 'High',
                     color: highPeriorityColor,
-                    isSelected: widget.newTask.periority == Periority.high,
+                    isSelected: widget.task.periority == Periority.high,
                     onClick: () {
                       setState(() {
-                        widget.newTask.periority = Periority.high;
+                        widget.task.periority = Periority.high;
                       });
                     },
                   ),
@@ -72,10 +78,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   child: PriorityCheckBox(
                     label: 'Normal',
                     color: mediumPeriorityColor,
-                    isSelected: widget.newTask.periority == Periority.medium,
+                    isSelected: widget.task.periority == Periority.medium,
                     onClick: () {
                       setState(() {
-                        widget.newTask.periority = Periority.medium;
+                        widget.task.periority = Periority.medium;
                       });
                     },
                   ),
@@ -88,10 +94,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   child: PriorityCheckBox(
                     label: 'Low',
                     color: lowPeriorityColor,
-                    isSelected: widget.newTask.periority == Periority.low,
+                    isSelected: widget.task.periority == Periority.low,
                     onClick: () {
                       setState(() {
-                        widget.newTask.periority = Periority.low;
+                        widget.task.periority = Periority.low;
                       });
                     },
                   ),
@@ -113,5 +119,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 }

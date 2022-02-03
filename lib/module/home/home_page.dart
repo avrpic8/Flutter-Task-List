@@ -4,13 +4,16 @@ import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/appbar.dart';
+import 'package:flutter_task_list/module/home/widget/empty_state.dart';
 import 'package:flutter_task_list/module/home/widget/header.dart';
 import 'package:flutter_task_list/global/reusable_switch.dart';
 import 'package:flutter_task_list/module/home/widget/task_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final searchBarController = TextEditingController();
+  final ValueNotifier<String> searchKeyWord = ValueNotifier('');
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,31 +23,56 @@ class HomePage extends StatelessWidget {
       backgroundColor: themData.colorScheme.background,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ReusableSwitch(
-          textSwitch: 'Add New Task',
-          icon: CupertinoIcons.add,
-          onClick: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EditTaskPage(
-                    newTask: Task(),
-                  )))),
+        textSwitch: 'Add New Task',
+        icon: CupertinoIcons.add,
+        onClick: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EditTaskPage(
+              task: Task(),
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            MyAppBar(themData: themData),
+            MyAppBar(
+              searchController: searchBarController,
+              notifier: searchKeyWord,
+            ),
             Expanded(
               child: ValueListenableBuilder(
-                valueListenable: box.listenable(),
+                valueListenable: searchKeyWord,
                 builder: (context, value, child) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-                    itemCount: box.values.length + 1,
-                    itemBuilder: (contex, index) {
-                      if (index == 0) {
-                        return Header(
-                          theme: themData,
+                  return ValueListenableBuilder(
+                    valueListenable: box.listenable(),
+                    builder: (context, value, child) {
+                      var items = [];
+                      if (searchBarController.text.isEmpty) {
+                        items = box.values.toList();
+                      } else {
+                        items = box.values
+                            .where((task) =>
+                                task.name.contains(searchBarController.text))
+                            .toList();
+                      }
+                      if (items.isNotEmpty) {
+                        return ListView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                          itemCount: items.length + 1,
+                          itemBuilder: (contex, index) {
+                            if (index == 0) {
+                              return Header(
+                                theme: themData,
+                              );
+                            } else {
+                              Task task = items[index - 1];
+                              return TaskCard(task: task);
+                            }
+                          },
                         );
                       } else {
-                        Task task = box.values.toList()[index - 1];
-                        return TaskCard(task: task);
+                        return const EmptyState();
                       }
                     },
                   );

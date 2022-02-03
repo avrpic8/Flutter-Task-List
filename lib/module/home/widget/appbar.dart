@@ -4,21 +4,24 @@ import 'package:flutter/material.dart';
 class MyAppBar extends StatelessWidget {
   const MyAppBar({
     Key? key,
-    required this.themData,
+    required this.searchController,
+    required this.notifier,
   }) : super(key: key);
 
-  final ThemeData themData;
+  final TextEditingController searchController;
+  final ValueNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Container(
       width: double.infinity,
       height: 110,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            themData.colorScheme.primary,
-            themData.colorScheme.primaryVariant
+            themeData.colorScheme.primary,
+            themeData.colorScheme.primaryVariant
           ],
         ),
         boxShadow: [
@@ -37,11 +40,11 @@ class MyAppBar extends StatelessWidget {
               children: [
                 Text(
                   'To Do List',
-                  style: themData.textTheme.headline6,
+                  style: themeData.textTheme.headline6,
                 ),
                 Icon(
                   CupertinoIcons.share,
-                  color: themData.colorScheme.onPrimary,
+                  color: themeData.colorScheme.onPrimary,
                 )
               ],
             ),
@@ -52,15 +55,19 @@ class MyAppBar extends StatelessWidget {
               width: double.infinity,
               height: 38,
               decoration: BoxDecoration(
-                color: themData.colorScheme.onPrimary,
+                color: themeData.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(19),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withOpacity(0.1), blurRadius: 20)
                 ],
               ),
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                onChanged: (newValue) {
+                  notifier.value = newValue;
+                },
+                controller: searchController,
+                decoration: const InputDecoration(
                   prefixIcon: Icon(CupertinoIcons.search),
                   label: Text('Search tasks...'),
                 ),
