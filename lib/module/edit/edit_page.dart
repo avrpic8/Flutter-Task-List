@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/data/model/task.dart';
-import 'package:flutter_task_list/global/reusable_switch.dart';
+import 'package:flutter_task_list/global_widgets/reusable_switch.dart';
 import 'package:flutter_task_list/module/edit/widget/priority_check_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

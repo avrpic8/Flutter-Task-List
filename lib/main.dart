@@ -4,10 +4,15 @@ import 'package:flutter_task_list/core/utile/app_theme.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/data/model/task.dart';
+import 'package:flutter_task_list/data/repo/repository.dart';
+import 'package:flutter_task_list/data/source/hive_task.dart';
 import 'package:flutter_task_list/module/home/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
+  final repository =
+      Repository(localDataSource: HiveTask(box: Hive.box(taskBoxName)));
+
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
   Hive.registerAdapter(PeriorityAdapter());
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme().getLightTheme(),
-      home:  HomePage(),
+      home: HomePage(),
     );
   }
 }

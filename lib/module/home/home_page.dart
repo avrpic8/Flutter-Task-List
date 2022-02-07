@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/data/model/task.dart';
+import 'package:flutter_task_list/global_widgets/reusable_switch.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/appbar.dart';
 import 'package:flutter_task_list/module/home/widget/empty_state.dart';
 import 'package:flutter_task_list/module/home/widget/header.dart';
-import 'package:flutter_task_list/global/reusable_switch.dart';
 import 'package:flutter_task_list/module/home/widget/task_card.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

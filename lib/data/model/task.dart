@@ -2,10 +2,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'task.g.dart';
 
 @HiveType(typeId: 0)
-class Task extends HiveObject{
-
+class Task extends HiveObject {
+  int id = -1;
   @HiveField(0)
-  String name ='';
+  String name = '';
   @HiveField(1)
   bool isCompleted = false;
   @HiveField(2)
@@ -13,11 +13,11 @@ class Task extends HiveObject{
 }
 
 @HiveType(typeId: 1)
-enum Periority { 
+enum Periority {
   @HiveField(0)
-  low, 
+  low,
   @HiveField(1)
-  medium, 
+  medium,
   @HiveField(2)
-  high 
+  high
 }
