@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/data/model/task.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_task_list/data/repo/repository.dart';
+import 'package:provider/provider.dart';
 
 class Header extends StatelessWidget {
   final ThemeData theme;
@@ -11,7 +11,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = Hive.box<Task>(taskBoxName);
+    final repository = Provider.of<Repository<Task>>(context, listen: false);
     return Column(
       children: [
         Row(
@@ -38,7 +38,7 @@ class Header extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: () {
-                box.clear();
+                repository.deleteAll();
               },
               color: const Color(0xffeaeff5),
               textColor: secondryTextColor,

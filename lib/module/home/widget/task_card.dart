@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/data/model/task.dart';
+import 'package:flutter_task_list/data/repo/repository.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/my_check_box.dart';
+import 'package:provider/provider.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
@@ -20,6 +22,7 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
+    final repository = Provider.of<Repository<Task>>(context);
     final themeData = Theme.of(context);
 
     final Color priorityColor;
@@ -58,11 +61,10 @@ class _TaskCardState extends State<TaskCard> {
             color: themeData.colorScheme.surface,
             borderRadius: BorderRadius.circular(taskCardRadius),
             child: InkWell(
-              onTap: () => setState(() {
+              onTap: () => 
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EditTaskPage(task: widget.task)));
-              }),
-              onLongPress: () => widget.task.delete(),
+                    builder: (context) => EditTaskPage(task: widget.task))),
+              onLongPress: () => repository.delete(widget.task),
               child: Container(
                 height: 84,
                 padding: const EdgeInsets.only(left: 16, right: 0),

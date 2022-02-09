@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/utile/constants.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/data/model/task.dart';
+import 'package:flutter_task_list/data/repo/repository.dart';
 import 'package:flutter_task_list/global_widgets/reusable_switch.dart';
 import 'package:flutter_task_list/module/edit/widget/priority_check_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class EditTaskPage extends StatefulWidget {
   final Task task;
@@ -28,6 +30,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final repository = Provider.of<Repository<Task>>(context, listen: false);
     return Scaffold(
       backgroundColor: themeData.colorScheme.background,
       appBar: AppBar(
@@ -42,12 +45,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         textSwitch: 'Save Changes',
         onClick: () {
           widget.task.name = _textController.text;
-          if (widget.task.isInBox) {
-            widget.task.save();
-          } else {
-            final box = Hive.box<Task>(taskBoxName);
-            box.add(widget.task);
-          }
+          repository.createOrUpdate(widget.task);
           Navigator.pop(context);
         },
       ),
