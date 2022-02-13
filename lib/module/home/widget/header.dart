@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
-import 'package:flutter_task_list/data/model/task.dart';
-import 'package:flutter_task_list/data/repo/repository.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_task_list/module/home/bloc/tasklist_bloc.dart';
+import 'package:provider/src/provider.dart';
+
 
 class Header extends StatelessWidget {
   final ThemeData theme;
@@ -11,7 +11,6 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final repository = Provider.of<Repository<Task>>(context, listen: false);
     return Column(
       children: [
         Row(
@@ -38,7 +37,7 @@ class Header extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: () {
-                repository.deleteAll();
+                context.read<TaskListBloc>().add(TaskListDeletAll());
               },
               color: const Color(0xffeaeff5),
               textColor: secondryTextColor,

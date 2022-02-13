@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_task_list/module/home/bloc/tasklist_bloc.dart';
+// ignore: implementation_imports
+import 'package:provider/src/provider.dart';
+
 
 class MyAppBar extends StatelessWidget {
   const MyAppBar({
     Key? key,
     required this.searchController,
-    required this.notifier,
   }) : super(key: key);
 
   final TextEditingController searchController;
-  final ValueNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class MyAppBar extends StatelessWidget {
               ),
               child: TextField(
                 onChanged: (newValue) {
-                  notifier.value = newValue;
+                  context.read<TaskListBloc>().add(TaskListSearch(newValue));
                 },
                 controller: searchController,
                 decoration: const InputDecoration(

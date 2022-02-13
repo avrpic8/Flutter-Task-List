@@ -25,7 +25,7 @@ class TaskListBloc extends Bloc<TaskListEvent, TaskListState> {
             searchTerm = '';
           }
 
-          // success empty error states
+          // success error states
           try {
             final items = await repository.getAll(searchKeyword: searchTerm);
             if (items.isNotEmpty) {

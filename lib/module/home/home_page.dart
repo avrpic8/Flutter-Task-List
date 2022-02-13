@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final searchBarController = TextEditingController();
-  final ValueNotifier<String> searchKeyWord = ValueNotifier('');
   HomePage({Key? key}) : super(key: key);
 
   @override
@@ -34,33 +33,39 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: BlocProvider<TaskListBloc>(
-        create: (context) => TaskListBloc(repository: context.read<Repository<Task>>()),
+        create: (context) =>
+            TaskListBloc(repository: context.read<Repository<Task>>()),
         child: SafeArea(
           child: Column(
             children: [
               MyAppBar(
                 searchController: searchBarController,
-                notifier: searchKeyWord,
               ),
               Expanded(
-                child: BlocBuilder<TaskListBloc, TaskListState>(
-                  builder: (context, state) {
-                    if (state is TaskListSuccess) {
-                      return TaskLists(items: state.items, themData: themData);
-                    } else if (state is TaskListEmpty) {
-                      return const EmptyState();
-                    } else if (state is TaskListLoading ||
-                        state is TaskListInitial) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is TaskListError) {
-                      return Center(
-                        child: Text(state.errorMessage),
-                      );
-                    } else {
-                      throw Exception('state is not valid');
-                    }
+                child: Consumer<Repository<Task>>(
+                  builder: (context, model, child) {
+                    context.read<TaskListBloc>().add(TaskListStarted());
+                    return BlocBuilder<TaskListBloc, TaskListState>(
+                      builder: (context, state) {
+                        if (state is TaskListSuccess) {
+                          return TaskLists(
+                              items: state.items, themData: themData);
+                        } else if (state is TaskListEmpty) {
+                          return const EmptyState();
+                        } else if (state is TaskListLoading ||
+                            state is TaskListInitial) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is TaskListError) {
+                          return Center(
+                            child: Text(state.errorMessage),
+                          );
+                        } else {
+                          throw Exception('state is not valid');
+                        }
+                      },
+                    );
                   },
                 ),
               ),
@@ -70,4 +75,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  
 }
