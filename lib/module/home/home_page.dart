@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/data/repo/repository.dart';
 import 'package:flutter_task_list/global_widgets/reusable_switch.dart';
+import 'package:flutter_task_list/module/edit/cubit/edittask_cubit.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/bloc/tasklist_bloc.dart';
 import 'package:flutter_task_list/module/home/widget/appbar.dart';
@@ -24,13 +25,17 @@ class HomePage extends StatelessWidget {
       floatingActionButton: ReusableSwitch(
         textSwitch: 'Add New Task',
         icon: CupertinoIcons.add,
-        onClick: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => EditTaskPage(
-              task: Task(),
+        onClick: () {
+          searchBarController.clear();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => BlocProvider<EditTaskCubit>(
+                create: (context) => EditTaskCubit(Task(), repository: context.read<Repository<Task>>()),
+                child: const EditTaskPage(),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
       body: BlocProvider<TaskListBloc>(
         create: (context) =>
@@ -75,6 +80,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  
 }

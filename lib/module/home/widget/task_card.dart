@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_task_list/core/values/colors.dart';
 import 'package:flutter_task_list/data/model/task.dart';
 import 'package:flutter_task_list/data/repo/repository.dart';
+import 'package:flutter_task_list/module/edit/cubit/edittask_cubit.dart';
 import 'package:flutter_task_list/module/edit/edit_page.dart';
 import 'package:flutter_task_list/module/home/widget/my_check_box.dart';
 import 'package:provider/provider.dart';
@@ -61,9 +63,17 @@ class _TaskCardState extends State<TaskCard> {
             color: themeData.colorScheme.surface,
             borderRadius: BorderRadius.circular(taskCardRadius),
             child: InkWell(
-              onTap: () => 
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EditTaskPage(task: widget.task))),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider<EditTaskCubit>(
+                    create: (context) => EditTaskCubit(
+                      widget.task,
+                      repository: context.read<Repository<Task>>(),
+                    ),
+                    child: const EditTaskPage(),
+                  ),
+                ),
+              ),
               onLongPress: () => repository.delete(widget.task),
               child: Container(
                 height: 84,
